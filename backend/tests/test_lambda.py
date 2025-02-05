@@ -1,5 +1,9 @@
 import pytest
-from lambda_function import lambda_handler
+
+import os
+
+from lambda_funtion import lambda_handler
+
 
 def test_create_item():
     event = {
