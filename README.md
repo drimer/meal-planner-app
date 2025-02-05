@@ -30,6 +30,14 @@ This project is a meal planner application that helps users plan their meals for
     pytest
     ```
 
+4. Ensure you have Docker installed and run all the infrastucture:
+
+    ```sh
+    docker-compose up
+    ```
+
+5. Ensure you have AWS_PROFILE set and its corresponding entry in ~/.aws/credentials
+
 ### Frontend
 
 1. Navigate to the `frontend` directory:

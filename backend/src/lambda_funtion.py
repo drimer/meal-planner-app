@@ -3,8 +3,9 @@ import boto3
 import os
 
 # Initialize DynamoDB resource
-dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table(os.getenv('DYNAMODB_TABLE'))
+print('Conneting to DynaoDB on endpoint:', os.getenv('DYNAMODB_ENDPOINT'), ' and region:', os.getenv('AWS_REGION'))
+dynamodb = boto3.resource('dynamodb', endpoint_url=os.getenv('DYNAMODB_ENDPOINT'))
+table = dynamodb.Table('table')
 
 def lambda_handler(event, context):
     if event['httpMethod'] == 'POST':
@@ -32,3 +33,19 @@ def get_item(event):
         'statusCode': 200,
         'body': json.dumps(response.get('Item', {}))
     }
+    
+    
+if __name__ == '__main__':
+    event = {
+        'httpMethod': 'POST',
+        'body': '{"name": "Chicken Breast", "serving": 200, "serving_unit": "g", "calories_per_serving": 165, "protein_per_serving": 31}'
+    }
+    response = lambda_handler(event, None)
+    print(response)
+    
+    event = {
+        'httpMethod': 'GET',
+        'queryStringParameters': {'key': 'Chicken Breast'}
+    }
+    response = lambda_handler(event, None)
+    print(response)
