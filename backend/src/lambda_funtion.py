@@ -1,24 +1,19 @@
 import json
-import os
 from decimal import Decimal
 
-import boto3
+from db.models import Ingredient
+from db.repositories import IngredientRepository
 
-# Initialize DynamoDB resource
-print(
-    "Conneting to DynaoDB on endpoint:",
-    os.getenv("DYNAMODB_ENDPOINT"),
-    " and region:",
-    os.getenv("AWS_REGION"),
-)
-dynamodb = boto3.resource("dynamodb", endpoint_url=os.getenv("DYNAMODB_ENDPOINT"))
-ingredients_table = dynamodb.Table("ingredients")
+INGREDIENT_REPOSITORY = IngredientRepository()
 
 
 class DecimalEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Decimal):
             return str(obj)
+        if isinstance(obj, Ingredient):
+            return obj.__dict__
+
         return json.JSONEncoder.default(self, obj)
 
 
@@ -40,7 +35,8 @@ def create_item(event):
 def get_item(event):
     name = event["queryStringParameters"]["name"]
     # response = ingredients_table.get_item(Key={"name": name})
-    items = ingredients_table.scan()["Items"]
+    # item = INGREDIENT_REPOSITORY.get_by_name(name)
+    items = INGREDIENT_REPOSITORY.get_all()
     return {"statusCode": 200, "body": json.dumps(items[0], cls=DecimalEncoder)}
 
 
