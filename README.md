@@ -38,6 +38,16 @@ This project is a meal planner application that helps users plan their meals for
 
 5. Ensure you have AWS_PROFILE set and its corresponding entry in ~/.aws/credentials
 
+6. Manually create the DynamoDB tables:
+
+    ```sh
+    aws --endpoint-url http://localhost:8000 dynamodb create-table \
+    --table-name "ingredients" \
+    --attribute-definitions AttributeName=uuid,AttributeType=S AttributeName=name,AttributeType=S \
+    --key-schema AttributeName=uuid,KeyType=HASH AttributeName=name,KeyType=RANGE \
+    --provisioned-throughput ReadCapacityUnits=10,WriteCapacityUnits=5
+    ```
+
 ### Frontend
 
 1. Navigate to the `frontend` directory:

@@ -1,0 +1,13 @@
+[project]
+name = "meal-planner-app-backend"
+version = "0.1.0"
+requires-python = ">= 3.10"
+readme = "README.md"
+license-files = ["LICENSE"]
+
+[tool.black]
+line_length = 100
+
+[tool.isort]
+profile = "black"
+line_length = 100
